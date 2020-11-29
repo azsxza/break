@@ -162,6 +162,7 @@
     <ClCompile Include="..\..\..\..\lib\glad\src\glad.c" />
     <ClCompile Include="brickGame.cpp" />
     <ClCompile Include="FGame.cpp" />
+    <ClCompile Include="FGameObject.cpp" />
     <ClCompile Include="FResourceManager.cpp" />
     <ClCompile Include="FShader.cpp" />
     <ClCompile Include="FSprite.cpp" />
@@ -170,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FGame.h" />
+    <ClInclude Include="FGameObject.h" />
     <ClInclude Include="FResourceManager.h" />
     <ClInclude Include="FShader.h" />
     <ClInclude Include="FSprite.h" />

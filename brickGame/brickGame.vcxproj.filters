@@ -45,6 +45,9 @@
     <ClCompile Include="FSprite.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FGameObject.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FGame.h">
@@ -63,6 +66,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FSprite.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FGameObject.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
