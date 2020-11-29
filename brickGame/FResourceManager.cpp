@@ -9,7 +9,7 @@ FShader FResourceManager::LoadShader(const string & VertexShaderFile, const stri
 	return Shaders[Name];
 }
 
-FShader FResourceManager::GetShader(const string & Name)
+FShader& FResourceManager::GetShader(const string & Name)
 {
 	return Shaders[Name];
 }
@@ -20,7 +20,7 @@ FTexture FResourceManager::LoadTexture(const string & ImageFile, const string & 
 	return Textures[Name];
 }
 
-FTexture FResourceManager::GetTexture(const string & Name)
+FTexture& FResourceManager::GetTexture(const string & Name)
 {
 	return Textures[Name];
 }

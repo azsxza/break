@@ -1,5 +1,7 @@
 #pragma once
 #include <glad/glad.h>
+#include "FResourceManager.h"
+#include "FSprite.h"
 
 enum GameState
 {

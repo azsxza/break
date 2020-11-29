@@ -85,9 +85,10 @@ FShader::FShader(string VertexShaderFile, string FragmentShaderFile, string Geom
 		ID = Helper.GetShaderProgram(VertexShader, FragmentShader);
 }
 
-void FShader::Use()
+FShader& FShader::Use()
 {
 	glUseProgram(ID);
+	return *this;
 }
 
 void FShader::SetBool(const string& Name, bool V)
