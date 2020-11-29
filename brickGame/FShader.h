@@ -28,7 +28,7 @@ public:
 
 	FShader() {};
 	FShader(string VertexShaderFile, string FragmentShaderFile, string GeometryShaderFile = "");
-	void use();
+	void Use();
 
 	void SetBool(const string& Name, bool V);
 	void SetInt(const string& Name, int V);
