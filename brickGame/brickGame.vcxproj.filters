@@ -70,7 +70,7 @@
     <None Include="sprite.vert">
       <Filter>资源文件\shaders</Filter>
     </None>
-    <None Include="sprte.frag">
+    <None Include="sprite.frag">
       <Filter>资源文件\shaders</Filter>
     </None>
   </ItemGroup>

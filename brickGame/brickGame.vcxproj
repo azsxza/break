@@ -178,7 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="sprite.vert" />
-    <None Include="sprte.frag" />
+    <None Include="sprite.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="awesomeface.png" />

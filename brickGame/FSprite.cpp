@@ -2,10 +2,13 @@
 
 FSprite::FSprite(FShader & Shader)
 {
+	this->Shader = Shader;
+	this->InitRenderData();
 }
 
 FSprite::~FSprite()
 {
+	glDeleteVertexArrays(1, &this->QuadVAO);
 }
 
 void FSprite::Draw(FTexture & Texture, glm::vec2 Position, glm::vec2 Size, GLfloat Rotate, glm::vec3 Color)
