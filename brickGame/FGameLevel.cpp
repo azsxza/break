@@ -5,38 +5,48 @@ void FGameLevel::Load(const string & FileName, GLuint LevelWidth, GLuint LevelHe
 {
 	this->Bricks.clear();
 
-	GLuint TitleCode;
+	GLuint TileCode;
 	string Line;
 	ifstream Fstream(FileName);
-	vector<vector<GLuint>> TitleData;
+	vector<vector<GLuint>> TileData;
 	if (Fstream)
 	{
 		while (getline(Fstream, Line))
 		{
 			istringstream Sstream(Line);
 			vector<GLuint> row;
-			while (Sstream >> TitleCode)
-				row.push_back(TitleCode);
-			TitleData.push_back(row);
+			while (Sstream >> TileCode)
+				row.push_back(TileCode);
+			TileData.push_back(row);
 		}
-		if (TitleData.size() > 0)
-			this->Init(TitleData, LevelWidth, LevelHeight);
+		if (TileData.size() > 0)
+			this->Init(TileData, LevelWidth, LevelHeight);
 	}
 }
 
 void FGameLevel::Draw(FSprite & Sprite)
 {
+	for (auto& Tile : this->Bricks)
+	{
+		if (!Tile.Destroyed)
+			Tile.Draw(Sprite);
+	}
 }
 
 GLboolean FGameLevel::IsCompleted()
 {
-	return GLboolean();
+	for (auto& Tile : this->Bricks)
+	{
+		if (!Tile.Destroyed && !Tile.IsSolid)
+			return GL_FALSE;
+	}
+	return GL_TRUE;
 }
 
-void FGameLevel::Init(vector<vector<GLuint>> TitleData, GLuint LevelWidth, GLuint LevelHeight)
+void FGameLevel::Init(vector<vector<GLuint>> TileData, GLuint LevelWidth, GLuint LevelHeight)
 {
-	GLuint Height = TitleData.size();
-	GLuint Width = TitleData[0].size();
+	GLuint Height = TileData.size();
+	GLuint Width = TileData[0].size();
 	GLfloat UnitWidth = (GLfloat)LevelWidth / (GLfloat)Width;
 	GLfloat UnitHeight = (GLfloat)LevelHeight / (GLfloat)Height;
 
@@ -46,7 +56,7 @@ void FGameLevel::Init(vector<vector<GLuint>> TitleData, GLuint LevelWidth, GLuin
 		{
 			glm::vec2 Pos(UnitWidth*x, UnitHeight*y);
 			glm::vec2 Size(UnitWidth, UnitHeight);
-			if (TitleData[y][x] == 1)
+			if (TileData[y][x] == 1)
 			{
 				FGameObject Obj(Pos, Size, FResourceManager::GetTexture("blockSolid"), glm::vec3(0.8f, 0.8f, 0.7f));
 				Obj.IsSolid = true;
@@ -55,7 +65,7 @@ void FGameLevel::Init(vector<vector<GLuint>> TitleData, GLuint LevelWidth, GLuin
 			else
 			{
 				glm::vec3 Color(1.0f);
-				switch (TitleData[y][x])
+				switch (TileData[y][x])
 				{
 				case 2:Color = glm::vec3(0.2f, 0.6f, 1.0f); break;
 				case 3:Color = glm::vec3(0.0f, 0.7f, 0.0f); break;

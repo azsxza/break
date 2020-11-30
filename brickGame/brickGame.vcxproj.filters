@@ -90,5 +90,11 @@
     <Image Include="awesomeface.png">
       <Filter>资源文件\textures</Filter>
     </Image>
+    <Image Include="block.png">
+      <Filter>资源文件\textures</Filter>
+    </Image>
+    <Image Include="block_solid.png">
+      <Filter>资源文件\textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>
