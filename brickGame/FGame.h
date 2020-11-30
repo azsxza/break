@@ -3,6 +3,7 @@
 #include "FResourceManager.h"
 #include "FSprite.h"
 #include "FGameLevel.h"
+#include "FBallObject.h"
 #include <GLFW/glfw3.h>
 
 enum GameState

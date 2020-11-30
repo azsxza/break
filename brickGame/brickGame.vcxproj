@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\..\lib\glad\src\glad.c" />
     <ClCompile Include="brickGame.cpp" />
+    <ClCompile Include="FBallObject.cpp" />
     <ClCompile Include="FGame.cpp" />
     <ClCompile Include="FGameLevel.cpp" />
     <ClCompile Include="FGameObject.cpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="stbi_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FBallObject.h" />
     <ClInclude Include="FGame.h" />
     <ClInclude Include="FGameLevel.h" />
     <ClInclude Include="FGameObject.h" />
