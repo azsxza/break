@@ -99,6 +99,9 @@
     <Image Include="block_solid.png">
       <Filter>资源文件\textures</Filter>
     </Image>
+    <Image Include="paddle.png">
+      <Filter>资源文件\textures</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="LevelFour.txt">
