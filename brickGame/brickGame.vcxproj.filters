@@ -19,6 +19,9 @@
     <Filter Include="资源文件\textures">
       <UniqueIdentifier>{2f414531-6631-4efe-85cc-12df6e937fbc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="资源文件\levels">
+      <UniqueIdentifier>{c1874948-ffbc-4010-a727-5441042ed49f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="brickGame.cpp">
@@ -96,5 +99,19 @@
     <Image Include="block_solid.png">
       <Filter>资源文件\textures</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="LevelFour.txt">
+      <Filter>资源文件\levels</Filter>
+    </Text>
+    <Text Include="LevelOne.txt">
+      <Filter>资源文件\levels</Filter>
+    </Text>
+    <Text Include="LevelThree.txt">
+      <Filter>资源文件\levels</Filter>
+    </Text>
+    <Text Include="LevelTwo.txt">
+      <Filter>资源文件\levels</Filter>
+    </Text>
   </ItemGroup>
 </Project>

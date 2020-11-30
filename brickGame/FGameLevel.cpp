@@ -62,7 +62,7 @@ void FGameLevel::Init(vector<vector<GLuint>> TileData, GLuint LevelWidth, GLuint
 				Obj.IsSolid = true;
 				this->Bricks.push_back(Obj);
 			}
-			else
+			else if (TileData[y][x] > 1)
 			{
 				glm::vec3 Color(1.0f);
 				switch (TileData[y][x])

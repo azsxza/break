@@ -189,6 +189,12 @@
     <Image Include="block.png" />
     <Image Include="block_solid.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="LevelFour.txt" />
+    <Text Include="LevelOne.txt" />
+    <Text Include="LevelThree.txt" />
+    <Text Include="LevelTwo.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

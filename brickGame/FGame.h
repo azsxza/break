@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include "FResourceManager.h"
 #include "FSprite.h"
+#include "FGameLevel.h"
 
 enum GameState
 {
@@ -16,6 +17,9 @@ public:
 	GameState State;
 	GLboolean bKeys[1024];
 	GLuint Width, Height;
+
+	vector<FGameLevel> Levels;
+	GLuint Level;
 
 	FGame(GLuint Width, GLuint Height);
 	~FGame();
