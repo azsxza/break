@@ -2,8 +2,11 @@
 #include <vector>
 #include <glad/glad.h>
 #include <string>
+#include <fstream>
+#include <sstream>
 #include "FGameObject.h"
 #include "FSprite.h"
+#include "FResourceManager.h"
 
 using namespace std;
 

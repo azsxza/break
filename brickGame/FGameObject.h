@@ -12,6 +12,7 @@ public:
 	glm::vec3 Color;
 	GLfloat Rotation;
 	GLboolean Destroyed;
+	GLboolean IsSolid;
 
 	FTexture Texture;
 

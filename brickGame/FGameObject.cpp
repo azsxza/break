@@ -9,6 +9,7 @@ FGameObject::FGameObject()
 	this->Rotation = 0.0f;
 	this->Texture = FTexture();
 	this->Destroyed = false;
+	this->IsSolid = false;
 }
 
 FGameObject::FGameObject(glm::vec2 Position, glm::vec2 Size, FTexture Texture, glm::vec3 Color, glm::vec2 Velocity)
@@ -20,6 +21,7 @@ FGameObject::FGameObject(glm::vec2 Position, glm::vec2 Size, FTexture Texture, g
 	this->Rotation = 0.0f;
 	this->Texture = Texture;
 	this->Destroyed = false;
+	this->IsSolid = false;
 }
 
 void FGameObject::Draw(FSprite & Sprite)
