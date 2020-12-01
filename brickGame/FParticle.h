@@ -9,13 +9,13 @@
 
 using namespace std;
 
-struct FPaticle
+struct FParticle
 {
 	glm::vec2 Position, Velocity;
 	glm::vec4 Color;
 	GLfloat Life;
 
-	FPaticle();
+	FParticle();
 };
 
 class FPaticleGenerator
@@ -26,7 +26,7 @@ public:
 	void Draw();
 
 private:
-	vector<FPaticle> Particles;
+	vector<FParticle> Particles;
 	GLuint Amount;
 	FShader Shader;
 	FTexture Texture;
@@ -34,5 +34,5 @@ private:
 	void Init();
 	GLuint FirstUnusedParticle();
 
-	void RespwnParticle(FPaticle& Particle, FGameObject& Object, glm::vec2 Offset = glm::vec2(0.0f));
+	void RespwnParticle(FParticle& Particle, FGameObject& Object, glm::vec2 Offset = glm::vec2(0.0f));
 };
