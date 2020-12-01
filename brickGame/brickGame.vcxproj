@@ -165,6 +165,7 @@
     <ClCompile Include="FGame.cpp" />
     <ClCompile Include="FGameLevel.cpp" />
     <ClCompile Include="FGameObject.cpp" />
+    <ClCompile Include="FParticle.cpp" />
     <ClCompile Include="FResourceManager.cpp" />
     <ClCompile Include="FShader.cpp" />
     <ClCompile Include="FSprite.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="FGame.h" />
     <ClInclude Include="FGameLevel.h" />
     <ClInclude Include="FGameObject.h" />
+    <ClInclude Include="FParticle.h" />
     <ClInclude Include="FResourceManager.h" />
     <ClInclude Include="FShader.h" />
     <ClInclude Include="FSprite.h" />
