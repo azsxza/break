@@ -61,6 +61,10 @@ void FGame::Update(GLfloat DeltaTime)
 {
 	Ball->Move(DeltaTime, this->Width);
 	this->DoCollision();
+	if (Ball->Position.y >= this->Height)
+	{
+		this->ResetPlayer();
+	}
 }
 
 void FGame::ProcessInput(GLfloat DeltaTime)
@@ -114,18 +118,77 @@ void FGame::DoCollision()
 	{
 		if (!Box.Destroyed)
 		{
-			if (CheckCollision(*Ball, Box))
+			FCollision Collision = CheckCollision(*Ball, Box);
+			if (get<0>(Collision))
 			{
 				if (!Box.IsSolid)
 				{
 					Box.Destroyed = true;
 				}
+				Direction Dir = get<1>(Collision);
+				glm::vec2 DiffVector = get<2>(Collision);
+				if (Dir == LEFT || Dir == RIGHT)
+				{
+					Ball->Velocity.x = -Ball->Velocity.x;
+					GLfloat Penetration = Ball->Radius - abs(DiffVector.x);
+					if (Dir == LEFT)
+					{
+						Ball->Position.x += Penetration;
+					}
+					else
+					{
+						Ball->Position.x -= Penetration;
+					}
+				}
+				else
+				{
+					Ball->Velocity.y = -Ball->Velocity.y;
+					GLfloat Penetration = Ball->Radius - abs(DiffVector.x);
+					if (Dir == UP)
+					{
+						Ball->Position.y -= Penetration;
+					}
+					else
+					{
+						Ball->Position.y += Penetration;
+					}
+				}
 			}
 		}
 	}
+	FCollision Collision = CheckCollision(*Ball, *Player);
+	if (!Ball->Stuck&&get<0>(Collision))
+	{
+		GLfloat CenterBoard = Player->Position.x + Player->Size.x / 2;
+		GLfloat Distance = Ball->Position.x + Ball->Radius - CenterBoard;
+		GLfloat Percentage = Distance / (Player->Size.x / 2);
+		GLfloat Strength = 2.0f;
+		GLfloat OLength = glm::length(Ball->Velocity);
+		Ball->Velocity.x = INITIAL_BALL_VELOCITY.x*Percentage*Strength;
+		Ball->Velocity.y = -abs(Ball->Velocity.y);
+		Ball->Velocity = glm::normalize(Ball->Velocity)*OLength;
+	}
 }
 
-GLboolean FGame::CheckCollision(FBallObject & A, FGameObject & B)
+void FGame::ResetLevel()
+{
+	switch (this->Level)
+	{
+	case 0:this->Levels[0].Load("LevelOne.txt", this->Width, this->Height); break;
+	case 1:this->Levels[1].Load("LevelTwo.txt", this->Width, this->Height); break;
+	case 2:this->Levels[2].Load("LevelThree.txt", this->Width, this->Height); break;
+	case 3:this->Levels[3].Load("LevelFour.txt", this->Width, this->Height); break;
+	}
+}
+
+void FGame::ResetPlayer()
+{
+	Player->Size = PLAYER_SIZE;
+	Player->Position = glm::vec2(this->Width / 2 - PLAYER_SIZE.x / 2, this->Height - PLAYER_SIZE.y);
+	Ball->Reset(Player->Position + glm::vec2(PLAYER_SIZE.x / 2 - BALL_RADIUS, -Ball->Radius * 2), INITIAL_BALL_VELOCITY);
+}
+
+FCollision FGame::CheckCollision(FBallObject & A, FGameObject & B)
 {
 	//bool CollisionX = (A.Position.x + A.Size.x >= B.Position.x) && (B.Position.x + B.Size.x >= A.Position.x);
 	//bool CollisionY = (A.Position.y + A.Size.y >= B.Position.y) && (B.Position.y + B.Size.y >= A.Position.y);
@@ -140,5 +203,32 @@ GLboolean FGame::CheckCollision(FBallObject & A, FGameObject & B)
 
 	Difference = Closest - Center;
 
-	return glm::length(Difference) < A.Radius;
+	if (glm::length(Difference) <= A.Radius)
+		return make_tuple(GL_TRUE, VectorDirection(Difference), Difference);
+	else
+		return make_tuple(GL_FALSE, UP, glm::vec2(0));
+
+}
+
+glm::vec2 Compass[] = {
+glm::vec2(0.0f, 1.0f),  // ио
+glm::vec2(1.0f, 0.0f),  // ср
+glm::vec2(0.0f, -1.0f), // об
+glm::vec2(-1.0f, 0.0f)  // вС
+};
+
+Direction FGame::VectorDirection(glm::vec2 Target)
+{
+	float Max = 0.0f;
+	int BestMatch = -1;
+	for (int i = 0; i < 4; i++)
+	{
+		float Dot = glm::dot(glm::normalize(Target), Compass[i]);
+		if (Dot > Max)
+		{
+			Max = Dot;
+			BestMatch = i;
+		}
+	}
+	return (Direction)BestMatch;
 }
