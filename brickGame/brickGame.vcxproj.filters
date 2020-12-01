@@ -100,6 +100,12 @@
     <None Include="sprite.frag">
       <Filter>资源文件\shaders</Filter>
     </None>
+    <None Include="particle.vert">
+      <Filter>资源文件\shaders</Filter>
+    </None>
+    <None Include="particle.frag">
+      <Filter>资源文件\shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="awesomeface.png">
@@ -112,6 +118,9 @@
       <Filter>资源文件\textures</Filter>
     </Image>
     <Image Include="paddle.png">
+      <Filter>资源文件\textures</Filter>
+    </Image>
+    <Image Include="particle.png">
       <Filter>资源文件\textures</Filter>
     </Image>
   </ItemGroup>

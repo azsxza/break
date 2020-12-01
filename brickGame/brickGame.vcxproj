@@ -185,6 +185,8 @@
     <ClInclude Include="stbi_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="particle.frag" />
+    <None Include="particle.vert" />
     <None Include="sprite.vert" />
     <None Include="sprite.frag" />
   </ItemGroup>
@@ -193,6 +195,7 @@
     <Image Include="block.png" />
     <Image Include="block_solid.png" />
     <Image Include="paddle.png" />
+    <Image Include="particle.png" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="LevelFour.txt" />

@@ -11,31 +11,35 @@ FGame::~FGame()
 {
 
 }
-// 初始化挡板的大小
 const glm::vec2 PLAYER_SIZE(100, 20);
-// 初始化当班的速率
 const GLfloat PLAYER_VELOCITY(500.0f);
-// Initial velocity of the Ball
 const glm::vec2 INITIAL_BALL_VELOCITY(100.0f, -350.0f);
-// Radius of the ball object
 const float BALL_RADIUS = 12.5f;
 FGameObject* Player;
 FSprite* Renderer;
 FBallObject* Ball;
+FPaticleGenerator* Particle;
 
 void FGame::Init()
 {
 	FResourceManager::LoadShader("sprite.vert", "sprite.frag", "", "sprite");
+	FResourceManager::LoadShader("particle.vert", "particle.frag", "", "particle");
 	glm::mat4 Projection = glm::ortho(0.0f, (GLfloat)this->Width, (GLfloat)this->Height, 0.0f, -1.0f, 1.0f);
 	FResourceManager::GetShader("sprite").Use().SetInt("Image", 0);
 	FResourceManager::GetShader("sprite").SetMat4("Projection", Projection);
+	FResourceManager::GetShader("particle").Use().SetInt("Image", 0);
+	FResourceManager::GetShader("particle").SetMat4("Projection", Projection);
 
-	Renderer = new FSprite(FResourceManager::GetShader("sprite"));
 	FResourceManager::LoadTexture("awesomeface.png", "face");
 	FResourceManager::LoadTexture("background.jpg", "background");
 	FResourceManager::LoadTexture("block.png", "block");
 	FResourceManager::LoadTexture("block_solid.png", "blockSolid");
 	FResourceManager::LoadTexture("paddle.png", "paddle");
+	FResourceManager::LoadTexture("particle.png", "particle");
+
+	Renderer = new FSprite(FResourceManager::GetShader("sprite"));
+	Particle = new FPaticleGenerator(FResourceManager::GetShader("particle"), FResourceManager::GetTexture("particle"), 500);
+
 
 	FGameLevel LevelOne;
 	LevelOne.Load("LevelOne.txt", this->Width, this->Height/2);
@@ -61,6 +65,7 @@ void FGame::Update(GLfloat DeltaTime)
 {
 	Ball->Move(DeltaTime, this->Width);
 	this->DoCollision();
+	Particle->Update(DeltaTime, *Ball, 2, glm::vec2(Ball->Radius / 2));
 	if (Ball->Position.y >= this->Height)
 	{
 		this->ResetPlayer();
@@ -103,11 +108,11 @@ void FGame::Render()
 {
 	if (this->State == GAME_ACTIVE)
 	{
-		
 		Renderer->Draw(FResourceManager::GetTexture("background"), glm::vec2(0, 0), glm::vec2(this->Width, this->Height), 0.0f);
 		this->Levels[this->Level].Draw(*Renderer);
 		Player->Draw(*Renderer);
 		Ball->Draw(*Renderer);
+		Particle->Draw();
 	}
 	
 }
