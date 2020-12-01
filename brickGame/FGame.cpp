@@ -60,6 +60,7 @@ void FGame::Init()
 void FGame::Update(GLfloat DeltaTime)
 {
 	Ball->Move(DeltaTime, this->Width);
+	this->DoCollision();
 }
 
 void FGame::ProcessInput(GLfloat DeltaTime)
@@ -103,7 +104,41 @@ void FGame::Render()
 		this->Levels[this->Level].Draw(*Renderer);
 		Player->Draw(*Renderer);
 		Ball->Draw(*Renderer);
-		cout << glGetError() << endl;
 	}
 	
+}
+
+void FGame::DoCollision()
+{
+	for (auto& Box : this->Levels[this->Level].Bricks)
+	{
+		if (!Box.Destroyed)
+		{
+			if (CheckCollision(*Ball, Box))
+			{
+				if (!Box.IsSolid)
+				{
+					Box.Destroyed = true;
+				}
+			}
+		}
+	}
+}
+
+GLboolean FGame::CheckCollision(FBallObject & A, FGameObject & B)
+{
+	//bool CollisionX = (A.Position.x + A.Size.x >= B.Position.x) && (B.Position.x + B.Size.x >= A.Position.x);
+	//bool CollisionY = (A.Position.y + A.Size.y >= B.Position.y) && (B.Position.y + B.Size.y >= A.Position.y);
+
+	//return CollisionX && CollisionY;
+	glm::vec2 Center(A.Position + A.Radius);
+	glm::vec2 AABBHalfExtents = B.Size / 2.0f;
+	glm::vec2 AABBCenter = B.Position + AABBHalfExtents;
+	glm::vec2 Difference = Center - AABBCenter;
+	glm::vec2 Clamped = glm::clamp(Difference, -AABBHalfExtents, AABBHalfExtents);
+	glm::vec2 Closest = AABBCenter + Clamped;
+
+	Difference = Closest - Center;
+
+	return glm::length(Difference) < A.Radius;
 }

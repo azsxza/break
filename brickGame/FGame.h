@@ -31,4 +31,9 @@ public:
 	void Update(GLfloat DeltaTime);
 	void Render();
 
+	void DoCollision();
+
+private:
+	GLboolean CheckCollision(FBallObject& A, FGameObject& B);
+
 };
