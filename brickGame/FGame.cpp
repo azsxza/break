@@ -111,8 +111,9 @@ void FGame::Render()
 		Renderer->Draw(FResourceManager::GetTexture("background"), glm::vec2(0, 0), glm::vec2(this->Width, this->Height), 0.0f);
 		this->Levels[this->Level].Draw(*Renderer);
 		Player->Draw(*Renderer);
-		Ball->Draw(*Renderer);
 		Particle->Draw();
+		Ball->Draw(*Renderer);
+		
 	}
 	
 }
