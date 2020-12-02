@@ -60,6 +60,9 @@
     <ClCompile Include="FParticle.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FPostProcesser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FGame.h">
@@ -90,6 +93,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FParticle.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FPostProcesser.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
