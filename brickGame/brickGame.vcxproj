@@ -167,6 +167,7 @@
     <ClCompile Include="FGameObject.cpp" />
     <ClCompile Include="FParticle.cpp" />
     <ClCompile Include="FPostProcesser.cpp" />
+    <ClCompile Include="FPowerUp.cpp" />
     <ClCompile Include="FResourceManager.cpp" />
     <ClCompile Include="FShader.cpp" />
     <ClCompile Include="FSprite.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="FGameObject.h" />
     <ClInclude Include="FParticle.h" />
     <ClInclude Include="FPostProcesser.h" />
+    <ClInclude Include="FPowerUp.h" />
     <ClInclude Include="FResourceManager.h" />
     <ClInclude Include="FShader.h" />
     <ClInclude Include="FSprite.h" />
@@ -200,6 +202,12 @@
     <Image Include="block_solid.png" />
     <Image Include="paddle.png" />
     <Image Include="particle.png" />
+    <Image Include="powerup_chaos.png" />
+    <Image Include="powerup_confuse.png" />
+    <Image Include="powerup_increase.png" />
+    <Image Include="powerup_passthrough.png" />
+    <Image Include="powerup_speed.png" />
+    <Image Include="powerup_sticky.png" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="LevelFour.txt" />

@@ -6,6 +6,7 @@
 #include "FBallObject.h"
 #include "FParticle.h"
 #include "FPostProcesser.h"
+#include "FPowerUp.h"
 #include <GLFW/glfw3.h>
 
 enum GameState
@@ -36,6 +37,8 @@ public:
 	vector<FGameLevel> Levels;
 	GLuint Level;
 
+	vector<FPowerUp> PowerUps;
+
 	FGame(GLuint Width, GLuint Height);
 	~FGame();
 
@@ -49,7 +52,10 @@ public:
 	void ResetLevel();
 	void ResetPlayer();
 
+	void SpawnPowerUps(FGameObject& block);
+	void UpdatePowerUps(GLfloat DeltaTime);
 private:
 	FCollision CheckCollision(FBallObject& A, FGameObject& B);
 	Direction VectorDirection(glm::vec2 Target);
+	GLboolean ShouldSpawn(GLuint Chance);
 };

@@ -63,6 +63,9 @@
     <ClCompile Include="FPostProcesser.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FPowerUp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FGame.h">
@@ -96,6 +99,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FPostProcesser.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FPowerUp.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -133,6 +139,24 @@
       <Filter>资源文件\textures</Filter>
     </Image>
     <Image Include="particle.png">
+      <Filter>资源文件\textures</Filter>
+    </Image>
+    <Image Include="powerup_chaos.png">
+      <Filter>资源文件\textures</Filter>
+    </Image>
+    <Image Include="powerup_confuse.png">
+      <Filter>资源文件\textures</Filter>
+    </Image>
+    <Image Include="powerup_increase.png">
+      <Filter>资源文件\textures</Filter>
+    </Image>
+    <Image Include="powerup_passthrough.png">
+      <Filter>资源文件\textures</Filter>
+    </Image>
+    <Image Include="powerup_speed.png">
+      <Filter>资源文件\textures</Filter>
+    </Image>
+    <Image Include="powerup_sticky.png">
       <Filter>资源文件\textures</Filter>
     </Image>
   </ItemGroup>

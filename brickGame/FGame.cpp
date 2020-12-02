@@ -41,6 +41,12 @@ void FGame::Init()
 	FResourceManager::LoadTexture("block_solid.png", "blockSolid");
 	FResourceManager::LoadTexture("paddle.png", "paddle");
 	FResourceManager::LoadTexture("particle.png", "particle");
+	FResourceManager::LoadTexture("powerup_chaos.png", "power_chaos");
+	FResourceManager::LoadTexture("powerup_confuse.png", "power_confuse");
+	FResourceManager::LoadTexture("powerup_increase.png", "power_size");
+	FResourceManager::LoadTexture("powerup_passthrough.png", "power_pass");
+	FResourceManager::LoadTexture("powerup_speed.png", "power_speed");
+	FResourceManager::LoadTexture("powerup_sticky.png", "power_sticky");
 
 	Renderer = new FSprite(FResourceManager::GetShader("sprite"));
 	Particle = new FPaticleGenerator(FResourceManager::GetShader("particle"), FResourceManager::GetTexture("particle"), 500);
@@ -213,6 +219,38 @@ void FGame::ResetPlayer()
 	Ball->Reset(Player->Position + glm::vec2(PLAYER_SIZE.x / 2 - BALL_RADIUS, -Ball->Radius * 2), INITIAL_BALL_VELOCITY);
 }
 
+void FGame::SpawnPowerUps(FGameObject& Block)
+{
+	if (this->ShouldSpawn(75))
+	{
+		this->PowerUps.push_back(FPowerUp("speed", glm::vec3(0.5f, 0.5f, 1.0f), 0.0f, Block.Position, FResourceManager::GetTexture("power_speed")));
+	}
+	if (this->ShouldSpawn(75))
+	{
+		this->PowerUps.push_back(FPowerUp("sticky", glm::vec3(1.0f, 0.5f, 1.0f), 0.0f, Block.Position, FResourceManager::GetTexture("power_sticky")));
+	}
+	if (this->ShouldSpawn(75))
+	{
+		this->PowerUps.push_back(FPowerUp("pass-through", glm::vec3(0.5f, 1.0f, 1.0f), 0.0f, Block.Position, FResourceManager::GetTexture("power_pass")));
+	}
+	if (this->ShouldSpawn(75))
+	{
+		this->PowerUps.push_back(FPowerUp("pas-size-increase", glm::vec3(1.0f, 0.6f, 0.4f), 0.0f, Block.Position, FResourceManager::GetTexture("power_size")));
+	}
+	if (this->ShouldSpawn(15))
+	{
+		this->PowerUps.push_back(FPowerUp("confuse", glm::vec3(1.0f, 0.3f, 0.3f), 0.0f, Block.Position, FResourceManager::GetTexture("power_confuse")));
+	}
+	if (this->ShouldSpawn(15))
+	{
+		this->PowerUps.push_back(FPowerUp("chaos", glm::vec3(0.9f, 0.25f, 0.25f), 0.0f, Block.Position, FResourceManager::GetTexture("power_chaos")));
+	}
+}
+
+void FGame::UpdatePowerUps(GLfloat DeltaTime)
+{
+}
+
 FCollision FGame::CheckCollision(FBallObject & A, FGameObject & B)
 {
 	//bool CollisionX = (A.Position.x + A.Size.x >= B.Position.x) && (B.Position.x + B.Size.x >= A.Position.x);
@@ -256,4 +294,10 @@ Direction FGame::VectorDirection(glm::vec2 Target)
 		}
 	}
 	return (Direction)BestMatch;
+}
+
+GLboolean FGame::ShouldSpawn(GLuint Chance)
+{
+	GLuint Random = rand() % Chance;
+	return Random == 0;
 }
