@@ -112,6 +112,12 @@
     <None Include="particle.frag">
       <Filter>资源文件\shaders</Filter>
     </None>
+    <None Include="postprocess.vert">
+      <Filter>资源文件\shaders</Filter>
+    </None>
+    <None Include="postprocess.frag">
+      <Filter>资源文件\shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="awesomeface.png">

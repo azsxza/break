@@ -189,6 +189,8 @@
   <ItemGroup>
     <None Include="particle.frag" />
     <None Include="particle.vert" />
+    <None Include="postprocess.frag" />
+    <None Include="postprocess.vert" />
     <None Include="sprite.vert" />
     <None Include="sprite.frag" />
   </ItemGroup>
