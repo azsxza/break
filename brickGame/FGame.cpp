@@ -4,6 +4,7 @@ const glm::vec2 PLAYER_SIZE(100, 20);
 const GLfloat PLAYER_VELOCITY(500.0f);
 const glm::vec2 INITIAL_BALL_VELOCITY(100.0f, -350.0f);
 const float BALL_RADIUS = 12.5f;
+float ShakeTime = 0.0f;
 FGameObject* Player;
 FSprite* Renderer;
 FBallObject* Ball;
@@ -45,9 +46,6 @@ void FGame::Init()
 	Particle = new FPaticleGenerator(FResourceManager::GetShader("particle"), FResourceManager::GetTexture("particle"), 500);
 	PostProcessor = new FPostProcesser(FResourceManager::GetShader("postprocess"), this->Width, this->Height);
 
-	PostProcessor->Chaos = true;
-	PostProcessor->Shake = true;
-
 	FGameLevel LevelOne;
 	LevelOne.Load("LevelOne.txt", this->Width, this->Height/2);
 	FGameLevel LevelTwo;
@@ -76,6 +74,12 @@ void FGame::Update(GLfloat DeltaTime)
 	if (Ball->Position.y >= this->Height)
 	{
 		this->ResetPlayer();
+	}
+	if (ShakeTime > 0)
+	{
+		ShakeTime -= DeltaTime;
+		if (ShakeTime < 0)
+			PostProcessor->Shake = false;
 	}
 }
 
@@ -140,6 +144,11 @@ void FGame::DoCollision()
 				if (!Box.IsSolid)
 				{
 					Box.Destroyed = true;
+				}
+				else
+				{
+					ShakeTime = 0.05f;
+					PostProcessor->Shake = true;
 				}
 				Direction Dir = get<1>(Collision);
 				glm::vec2 DiffVector = get<2>(Collision);
