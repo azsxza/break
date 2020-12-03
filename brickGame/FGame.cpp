@@ -144,7 +144,7 @@ void FGame::Render()
 		PostProcessor->EndRender();
 		PostProcessor->Render(glfwGetTime());
 		//cout << (int)PostProcessor->Confuse << endl;
-		cout << (int)Ball->PassThrough << endl;
+		//cout << (int)Ball->PassThrough << endl;
 	}
 	
 }
@@ -170,7 +170,7 @@ void FGame::DoCollision()
 				}
 				Direction Dir = get<1>(Collision);
 				glm::vec2 DiffVector = get<2>(Collision);
-				if (!(Ball->PassThrough && !Ball->IsSolid))
+				if (!(Ball->PassThrough && !Box.IsSolid))
 				{
 					if (Dir == LEFT || Dir == RIGHT)
 					{
@@ -392,6 +392,7 @@ void FGame::ActivatePowerUp(FPowerUp& PowerUp)
 {
 	if (PowerUp.Activated)
 		return;
+	PowerUp.Activated = true;
 	if (PowerUp.Type == "speed")
 	{
 		Ball->Velocity *= 1.2f;
