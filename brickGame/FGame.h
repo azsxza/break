@@ -56,6 +56,10 @@ public:
 	void UpdatePowerUps(GLfloat DeltaTime);
 private:
 	FCollision CheckCollision(FBallObject& A, FGameObject& B);
+	bool CheckCollision(FGameObject& A, FGameObject& B);
 	Direction VectorDirection(glm::vec2 Target);
 	GLboolean ShouldSpawn(GLuint Chance);
+
+	void ActivatePowerUp(FPowerUp& PowerUp);
+	bool IsOtherPowerUpActivate(const string& Type);
 };

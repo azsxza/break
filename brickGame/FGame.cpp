@@ -1,5 +1,7 @@
 #include "FGame.h"
 
+#include <algorithm>
+
 const glm::vec2 PLAYER_SIZE(100, 20);
 const GLfloat PLAYER_VELOCITY(500.0f);
 const glm::vec2 INITIAL_BALL_VELOCITY(100.0f, -350.0f);
@@ -87,6 +89,7 @@ void FGame::Update(GLfloat DeltaTime)
 		if (ShakeTime < 0)
 			PostProcessor->Shake = false;
 	}
+	this->UpdatePowerUps(DeltaTime);
 }
 
 void FGame::ProcessInput(GLfloat DeltaTime)
@@ -130,10 +133,18 @@ void FGame::Render()
 		this->Levels[this->Level].Draw(*Renderer);
 		Player->Draw(*Renderer);
 		Particle->Draw();
+		for (auto& PowerUp : this->PowerUps)
+		{
+			if (!PowerUp.Destroyed)
+				PowerUp.Draw(*Renderer);
+		}
 		Ball->Draw(*Renderer);
+
+
 		PostProcessor->EndRender();
 		PostProcessor->Render(glfwGetTime());
-		
+		//cout << (int)PostProcessor->Confuse << endl;
+		cout << (int)Ball->PassThrough << endl;
 	}
 	
 }
@@ -150,6 +161,7 @@ void FGame::DoCollision()
 				if (!Box.IsSolid)
 				{
 					Box.Destroyed = true;
+					this->SpawnPowerUps(Box);
 				}
 				else
 				{
@@ -158,30 +170,33 @@ void FGame::DoCollision()
 				}
 				Direction Dir = get<1>(Collision);
 				glm::vec2 DiffVector = get<2>(Collision);
-				if (Dir == LEFT || Dir == RIGHT)
+				if (!(Ball->PassThrough && !Ball->IsSolid))
 				{
-					Ball->Velocity.x = -Ball->Velocity.x;
-					GLfloat Penetration = Ball->Radius - abs(DiffVector.x);
-					if (Dir == LEFT)
+					if (Dir == LEFT || Dir == RIGHT)
 					{
-						Ball->Position.x += Penetration;
+						Ball->Velocity.x = -Ball->Velocity.x;
+						GLfloat Penetration = Ball->Radius - abs(DiffVector.x);
+						if (Dir == LEFT)
+						{
+							Ball->Position.x += Penetration;
+						}
+						else
+						{
+							Ball->Position.x -= Penetration;
+						}
 					}
 					else
 					{
-						Ball->Position.x -= Penetration;
-					}
-				}
-				else
-				{
-					Ball->Velocity.y = -Ball->Velocity.y;
-					GLfloat Penetration = Ball->Radius - abs(DiffVector.x);
-					if (Dir == UP)
-					{
-						Ball->Position.y -= Penetration;
-					}
-					else
-					{
-						Ball->Position.y += Penetration;
+						Ball->Velocity.y = -Ball->Velocity.y;
+						GLfloat Penetration = Ball->Radius - abs(DiffVector.x);
+						if (Dir == UP)
+						{
+							Ball->Position.y -= Penetration;
+						}
+						else
+						{
+							Ball->Position.y += Penetration;
+						}
 					}
 				}
 			}
@@ -198,6 +213,25 @@ void FGame::DoCollision()
 		Ball->Velocity.x = INITIAL_BALL_VELOCITY.x*Percentage*Strength;
 		Ball->Velocity.y = -abs(Ball->Velocity.y);
 		Ball->Velocity = glm::normalize(Ball->Velocity)*OLength;
+		Ball->Stuck = Ball->Sticky;
+	}
+
+	for (auto& PowerUp : this->PowerUps)
+	{
+		if (!PowerUp.Destroyed)
+		{
+			if (PowerUp.Position.y >= this->Height)
+			{
+				PowerUp.Destroyed = true;
+			}
+			if (CheckCollision(*Player, PowerUp))
+			{
+				this->ActivatePowerUp(PowerUp);
+				PowerUp.Destroyed = true;
+				PowerUp.Activated = true;
+			}
+
+		}
 	}
 }
 
@@ -227,11 +261,11 @@ void FGame::SpawnPowerUps(FGameObject& Block)
 	}
 	if (this->ShouldSpawn(75))
 	{
-		this->PowerUps.push_back(FPowerUp("sticky", glm::vec3(1.0f, 0.5f, 1.0f), 0.0f, Block.Position, FResourceManager::GetTexture("power_sticky")));
+		this->PowerUps.push_back(FPowerUp("sticky", glm::vec3(1.0f, 0.5f, 1.0f), 20.0f, Block.Position, FResourceManager::GetTexture("power_sticky")));
 	}
 	if (this->ShouldSpawn(75))
 	{
-		this->PowerUps.push_back(FPowerUp("pass-through", glm::vec3(0.5f, 1.0f, 1.0f), 0.0f, Block.Position, FResourceManager::GetTexture("power_pass")));
+		this->PowerUps.push_back(FPowerUp("pass-through", glm::vec3(0.5f, 1.0f, 1.0f), 10.0f, Block.Position, FResourceManager::GetTexture("power_pass")));
 	}
 	if (this->ShouldSpawn(75))
 	{
@@ -239,24 +273,68 @@ void FGame::SpawnPowerUps(FGameObject& Block)
 	}
 	if (this->ShouldSpawn(15))
 	{
-		this->PowerUps.push_back(FPowerUp("confuse", glm::vec3(1.0f, 0.3f, 0.3f), 0.0f, Block.Position, FResourceManager::GetTexture("power_confuse")));
+		this->PowerUps.push_back(FPowerUp("confuse", glm::vec3(1.0f, 0.3f, 0.3f), 15.0f, Block.Position, FResourceManager::GetTexture("power_confuse")));
 	}
 	if (this->ShouldSpawn(15))
 	{
-		this->PowerUps.push_back(FPowerUp("chaos", glm::vec3(0.9f, 0.25f, 0.25f), 0.0f, Block.Position, FResourceManager::GetTexture("power_chaos")));
+		this->PowerUps.push_back(FPowerUp("chaos", glm::vec3(0.9f, 0.25f, 0.25f), 15.0f, Block.Position, FResourceManager::GetTexture("power_chaos")));
 	}
 }
 
 void FGame::UpdatePowerUps(GLfloat DeltaTime)
 {
+	for (auto& PowerUp : this->PowerUps)
+	{
+		PowerUp.Position += PowerUp.Velocity*DeltaTime;
+		if (PowerUp.Activated)
+		{
+			PowerUp.Duration -= DeltaTime;
+			//cout << PowerUp.Duration << endl;
+			if (PowerUp.Duration <= 0.0f)
+			{
+				PowerUp.Activated = false;
+				if (PowerUp.Type == "sticky")
+				{
+					if (!IsOtherPowerUpActivate("sticky"))
+					{
+						Ball->Sticky = false;
+						Player->Color = glm::vec3(1);
+					}
+				}
+				else if (PowerUp.Type == "pass-through")
+				{
+					if (!IsOtherPowerUpActivate("pass-through"))
+					{
+						Ball->PassThrough = false;
+						Ball->Color = glm::vec3(1);
+					}
+				}
+				else if (PowerUp.Type == "confuse")
+				{
+					if (!IsOtherPowerUpActivate("confuse"))
+					{
+						PostProcessor->Confuse = false;
+					}
+				}
+				else if (PowerUp.Type == "chaos")
+				{
+					if (!IsOtherPowerUpActivate("chaos"))
+					{
+						PostProcessor->Chaos = false;
+					}
+				}
+			}
+		}
+	}
+	this->PowerUps.erase(remove_if(this->PowerUps.begin(),this->PowerUps.end(),
+		[](const FPowerUp& PowerUp)
+		{
+			return PowerUp.Destroyed && !PowerUp.Activated;
+		}), this->PowerUps.end());
 }
 
 FCollision FGame::CheckCollision(FBallObject & A, FGameObject & B)
 {
-	//bool CollisionX = (A.Position.x + A.Size.x >= B.Position.x) && (B.Position.x + B.Size.x >= A.Position.x);
-	//bool CollisionY = (A.Position.y + A.Size.y >= B.Position.y) && (B.Position.y + B.Size.y >= A.Position.y);
-
-	//return CollisionX && CollisionY;
 	glm::vec2 Center(A.Position + A.Radius);
 	glm::vec2 AABBHalfExtents = B.Size / 2.0f;
 	glm::vec2 AABBCenter = B.Position + AABBHalfExtents;
@@ -271,6 +349,14 @@ FCollision FGame::CheckCollision(FBallObject & A, FGameObject & B)
 	else
 		return make_tuple(GL_FALSE, UP, glm::vec2(0));
 
+}
+
+bool FGame::CheckCollision(FGameObject & A, FGameObject & B)
+{
+	bool CollisionX = (A.Position.x + A.Size.x >= B.Position.x) && (B.Position.x + B.Size.x >= A.Position.x);
+	bool CollisionY = (A.Position.y + A.Size.y >= B.Position.y) && (B.Position.y + B.Size.y >= A.Position.y);
+
+	return CollisionX && CollisionY;
 }
 
 glm::vec2 Compass[] = {
@@ -300,4 +386,51 @@ GLboolean FGame::ShouldSpawn(GLuint Chance)
 {
 	GLuint Random = rand() % Chance;
 	return Random == 0;
+}
+
+void FGame::ActivatePowerUp(FPowerUp& PowerUp)
+{
+	if (PowerUp.Activated)
+		return;
+	if (PowerUp.Type == "speed")
+	{
+		Ball->Velocity *= 1.2f;
+	}
+	else if (PowerUp.Type == "sticky")
+	{
+		Ball->Sticky = true;
+		Player->Color = glm::vec3(1.0f, 0.5f, 1.0f);
+	}
+	else if (PowerUp.Type == "pass-through")
+	{
+		Ball->PassThrough = true;
+		Ball->Color = glm::vec3(1.0f, 0.5f, 0.5f);
+	}
+	else if (PowerUp.Type == "pas-size-increase")
+	{
+		Player->Size.x += 50;
+	}
+	else if (PowerUp.Type == "confuse")
+	{
+		if (!PostProcessor->Chaos)
+		{
+			PostProcessor->Confuse = true;
+			cout << (int)PostProcessor->Confuse << endl;
+		}
+	}
+	else if (PowerUp.Type == "chaos")
+	{
+		if (!PostProcessor->Confuse)
+			PostProcessor->Chaos = true;
+	}
+}
+
+bool FGame::IsOtherPowerUpActivate(const string & Type)
+{
+	for (auto& PowerUp : this->PowerUps)
+	{
+		if (PowerUp.Activated&&PowerUp.Type == Type)
+			return true;
+	}
+	return false;
 }

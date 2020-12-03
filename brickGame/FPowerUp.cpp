@@ -5,4 +5,5 @@ FPowerUp::FPowerUp(string Type, glm::vec3 Color, GLfloat Duration, glm::vec2 Pos
 {
 	this->Type = Type;
 	this->Duration = Duration;
+	this->Activated = false;
 }

@@ -5,6 +5,8 @@ FBallObject::FBallObject()
 	FGameObject();
 	this->Radius = 12.5f;
 	this->Stuck = true;
+	this->Sticky = false;
+	this->PassThrough = false;
 }
 
 FBallObject::FBallObject(glm::vec2 Pos, float Radius, glm::vec2 Velocity, FTexture Texture):FGameObject(Pos, glm::vec2(Radius * 2), Texture, glm::vec3(1.0f), Velocity)
@@ -12,6 +14,8 @@ FBallObject::FBallObject(glm::vec2 Pos, float Radius, glm::vec2 Velocity, FTextu
 	
 	this->Radius = Radius;
 	this->Stuck = true;
+	this->Sticky = false;
+	this->PassThrough = false;
 }
 
 glm::vec2 FBallObject::Move(float DeltaTime, GLuint WindowWidth)
