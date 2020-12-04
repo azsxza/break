@@ -168,11 +168,13 @@ void FGame::DoCollision()
 				{
 					Box.Destroyed = true;
 					this->SpawnPowerUps(Box);
+					SoundEngine->play2D("bleep.mp3");
 				}
 				else
 				{
 					ShakeTime = 0.05f;
 					PostProcessor->Shake = true;
+					SoundEngine->play2D("solid.wav");
 				}
 				Direction Dir = get<1>(Collision);
 				glm::vec2 DiffVector = get<2>(Collision);
@@ -220,6 +222,8 @@ void FGame::DoCollision()
 		Ball->Velocity.y = -abs(Ball->Velocity.y);
 		Ball->Velocity = glm::normalize(Ball->Velocity)*OLength;
 		Ball->Stuck = Ball->Sticky;
+
+		SoundEngine->play2D("bleep.wav");
 	}
 
 	for (auto& PowerUp : this->PowerUps)
@@ -235,6 +239,7 @@ void FGame::DoCollision()
 				this->ActivatePowerUp(PowerUp);
 				PowerUp.Destroyed = true;
 				PowerUp.Activated = true;
+				SoundEngine->play2D("powerup.wav");
 			}
 
 		}

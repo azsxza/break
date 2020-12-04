@@ -217,7 +217,11 @@
     <Text Include="LevelTwo.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Media Include="bleep.mp3" />
+    <Media Include="bleep.wav" />
     <Media Include="breakout.mp3" />
+    <Media Include="powerup.wav" />
+    <Media Include="solid.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

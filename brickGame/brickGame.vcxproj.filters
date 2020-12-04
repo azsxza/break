@@ -181,5 +181,17 @@
     <Media Include="breakout.mp3">
       <Filter>资源文件\audios</Filter>
     </Media>
+    <Media Include="bleep.mp3">
+      <Filter>资源文件\audios</Filter>
+    </Media>
+    <Media Include="bleep.wav">
+      <Filter>资源文件\audios</Filter>
+    </Media>
+    <Media Include="powerup.wav">
+      <Filter>资源文件\audios</Filter>
+    </Media>
+    <Media Include="solid.wav">
+      <Filter>资源文件\audios</Filter>
+    </Media>
   </ItemGroup>
 </Project>
