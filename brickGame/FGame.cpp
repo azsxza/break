@@ -14,14 +14,16 @@ FSprite* Renderer;
 FBallObject* Ball;
 FPaticleGenerator* Particle;
 FPostProcesser* PostProcessor;
+FTextRender* Text;
 
 ISoundEngine* SoundEngine;
 
 FGame::FGame(GLuint Width, GLuint Height)
 {
-	State = GAME_ACTIVE;
+	State = GAME_MENU;
 	this->Width = Width;
 	this->Height = Height;
+	this->Lives = 3;
 }
 
 FGame::~FGame()
@@ -78,6 +80,10 @@ void FGame::Init()
 	Ball = new FBallObject(BallPos,BALL_RADIUS,INITIAL_BALL_VELOCITY,FResourceManager::GetTexture("face"));
 	SoundEngine = createIrrKlangDevice();
 	SoundEngine->play2D("breakout.mp3");
+
+	Text = new FTextRender(this->Width, this->Height);
+	Text->Load("OCRAEXT.TTF", 24);
+
 }
 
 void FGame::Update(GLfloat DeltaTime)
@@ -87,6 +93,12 @@ void FGame::Update(GLfloat DeltaTime)
 	Particle->Update(DeltaTime, *Ball, 2, glm::vec2(Ball->Radius / 2));
 	if (Ball->Position.y >= this->Height)
 	{
+		this->Lives--;
+		if (this->Lives == 0)
+		{
+			this->ResetLevel();
+			this->State = GAME_MENU;
+		}
 		this->ResetPlayer();
 	}
 	if (ShakeTime > 0)
@@ -128,11 +140,32 @@ void FGame::ProcessInput(GLfloat DeltaTime)
 		if (this->bKeys[GLFW_KEY_SPACE])
 			Ball->Stuck = false;
 	}
+	else if (this->State == GAME_MENU)
+	{
+		if (this->bKeys[GLFW_KEY_ENTER] && !this->bKeysProcessed[GLFW_KEY_ENTER])
+		{
+			this->State = GAME_ACTIVE;
+			this->bKeysProcessed[GLFW_KEY_ENTER] = true;
+		}
+		if (this->bKeys[GLFW_KEY_W] && !this->bKeysProcessed[GLFW_KEY_W])
+		{
+			this->Level = (this->Level + 1) % 4;
+			this->bKeysProcessed[GLFW_KEY_W] = true;
+		}
+		if (this->bKeys[GLFW_KEY_S] && !this->bKeysProcessed[GLFW_KEY_S])
+		{
+			if (this->Level > 0)
+				this->Level--;
+			else
+				this->Level = 3;
+			this->bKeysProcessed[GLFW_KEY_S] = true;
+		}
+	}
 }
 
 void FGame::Render()
 {
-	if (this->State == GAME_ACTIVE)
+	if (this->State == GAME_ACTIVE || this->State == GAME_MENU)
 	{
 		PostProcessor->BeginRender();
 		Renderer->Draw(FResourceManager::GetTexture("background"), glm::vec2(0, 0), glm::vec2(this->Width, this->Height), 0.0f);
@@ -151,8 +184,14 @@ void FGame::Render()
 		PostProcessor->Render(glfwGetTime());
 		//cout << (int)PostProcessor->Confuse << endl;
 		//cout << (int)Ball->PassThrough << endl;
+
+		Text->RenderText("Lives:" + to_string(this->Lives), 5.0f, 5.0f, 1.0f);
 	}
-	
+	if (this->State == GAME_MENU)
+	{
+		Text->RenderText("Press Enter to Start", 250.0f, Height / 2, 1.0f);
+		Text->RenderText("Press W or S to select level", 245.0f, Height / 2 + 20.0f, 1.0f);
+	}
 }
 
 void FGame::DoCollision()
@@ -255,6 +294,7 @@ void FGame::ResetLevel()
 	case 2:this->Levels[2].Load("LevelThree.txt", this->Width, this->Height); break;
 	case 3:this->Levels[3].Load("LevelFour.txt", this->Width, this->Height); break;
 	}
+	this->Lives = 3;
 }
 
 void FGame::ResetPlayer()

@@ -25,6 +25,9 @@
     <Filter Include="资源文件\audios">
       <UniqueIdentifier>{5b981136-cd65-490a-83ad-0ce746ee9a45}</UniqueIdentifier>
     </Filter>
+    <Filter Include="资源文件\fonts">
+      <UniqueIdentifier>{afc9fa98-2e91-44a6-83fd-8f756403f952}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="brickGame.cpp">
@@ -69,6 +72,9 @@
     <ClCompile Include="FPowerUp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FTextRender.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FGame.h">
@@ -107,6 +113,9 @@
     <ClInclude Include="FPowerUp.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FTextRender.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="sprite.vert">
@@ -125,6 +134,12 @@
       <Filter>资源文件\shaders</Filter>
     </None>
     <None Include="postprocess.frag">
+      <Filter>资源文件\shaders</Filter>
+    </None>
+    <None Include="text.vert">
+      <Filter>资源文件\shaders</Filter>
+    </None>
+    <None Include="text.frag">
       <Filter>资源文件\shaders</Filter>
     </None>
   </ItemGroup>
@@ -193,5 +208,10 @@
     <Media Include="solid.wav">
       <Filter>资源文件\audios</Filter>
     </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="OCRAEXT.TTF">
+      <Filter>资源文件\fonts</Filter>
+    </Font>
   </ItemGroup>
 </Project>

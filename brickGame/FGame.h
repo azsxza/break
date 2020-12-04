@@ -7,6 +7,7 @@
 #include "FParticle.h"
 #include "FPostProcesser.h"
 #include "FPowerUp.h"
+#include "FTextRender.h"
 #include <GLFW/glfw3.h>
 
 enum GameState
@@ -29,9 +30,11 @@ typedef std::tuple<GLboolean, Direction, glm::vec2> FCollision;
 class FGame
 {
 public:
+	GLuint Lives;
 
 	GameState State;
 	GLboolean bKeys[1024];
+	GLboolean bKeysProcessed[1024];
 	GLuint Width, Height;
 
 	vector<FGameLevel> Levels;

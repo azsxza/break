@@ -172,6 +172,7 @@
     <ClCompile Include="FResourceManager.cpp" />
     <ClCompile Include="FShader.cpp" />
     <ClCompile Include="FSprite.cpp" />
+    <ClCompile Include="FTextRender.cpp" />
     <ClCompile Include="FTexture.cpp" />
     <ClCompile Include="stbi_image.cpp" />
   </ItemGroup>
@@ -186,6 +187,7 @@
     <ClInclude Include="FResourceManager.h" />
     <ClInclude Include="FShader.h" />
     <ClInclude Include="FSprite.h" />
+    <ClInclude Include="FTextRender.h" />
     <ClInclude Include="FTexture.h" />
     <ClInclude Include="stbi_image.h" />
   </ItemGroup>
@@ -196,6 +198,8 @@
     <None Include="postprocess.vert" />
     <None Include="sprite.vert" />
     <None Include="sprite.frag" />
+    <None Include="text.frag" />
+    <None Include="text.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="awesomeface.png" />
@@ -222,6 +226,9 @@
     <Media Include="breakout.mp3" />
     <Media Include="powerup.wav" />
     <Media Include="solid.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="OCRAEXT.TTF" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

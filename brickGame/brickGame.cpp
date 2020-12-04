@@ -28,7 +28,10 @@ void KeyCallback(GLFWwindow* Window, int Key, int Scancode, int Action, int Mode
 		if (Action == GLFW_PRESS)
 			Breakout.bKeys[Key] = GL_TRUE;
 		else if (Action == GLFW_RELEASE)
+		{
 			Breakout.bKeys[Key] = GL_FALSE;
+			Breakout.bKeysProcessed[Key] = false;
+		}
 	}
 }
 
@@ -68,7 +71,7 @@ int main()
 	GLfloat DeltaTime = 0.0f;
 	GLfloat LastFrame = 0.0f;
 
-	Breakout.State = GAME_ACTIVE;
+	//Breakout.State = GAME_ACTIVE;
 	// render loop
 	// -----------
 	while (!glfwWindowShouldClose(window))
