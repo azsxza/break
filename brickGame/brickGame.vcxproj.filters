@@ -22,6 +22,9 @@
     <Filter Include="资源文件\levels">
       <UniqueIdentifier>{c1874948-ffbc-4010-a727-5441042ed49f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="资源文件\audios">
+      <UniqueIdentifier>{5b981136-cd65-490a-83ad-0ce746ee9a45}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="brickGame.cpp">
@@ -173,5 +176,10 @@
     <Text Include="LevelTwo.txt">
       <Filter>资源文件\levels</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="breakout.mp3">
+      <Filter>资源文件\audios</Filter>
+    </Media>
   </ItemGroup>
 </Project>

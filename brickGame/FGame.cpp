@@ -1,6 +1,8 @@
 #include "FGame.h"
 
+#include <irrKlang.h>
 #include <algorithm>
+using namespace irrklang;
 
 const glm::vec2 PLAYER_SIZE(100, 20);
 const GLfloat PLAYER_VELOCITY(500.0f);
@@ -12,6 +14,8 @@ FSprite* Renderer;
 FBallObject* Ball;
 FPaticleGenerator* Particle;
 FPostProcesser* PostProcessor;
+
+ISoundEngine* SoundEngine;
 
 FGame::FGame(GLuint Width, GLuint Height)
 {
@@ -72,6 +76,8 @@ void FGame::Init()
 	Player = new FGameObject(PlayerPos, PLAYER_SIZE, FResourceManager::GetTexture("paddle"));
 	glm::vec2 BallPos = PlayerPos + glm::vec2(PLAYER_SIZE.x / 2 - BALL_RADIUS, -BALL_RADIUS * 2.0f);
 	Ball = new FBallObject(BallPos,BALL_RADIUS,INITIAL_BALL_VELOCITY,FResourceManager::GetTexture("face"));
+	SoundEngine = createIrrKlangDevice();
+	SoundEngine->play2D("breakout.mp3");
 }
 
 void FGame::Update(GLfloat DeltaTime)
