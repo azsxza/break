@@ -108,6 +108,13 @@ void FGame::Update(GLfloat DeltaTime)
 			PostProcessor->Shake = false;
 	}
 	this->UpdatePowerUps(DeltaTime);
+	if (this->State == GAME_ACTIVE && this->Levels[Level].IsCompleted())
+	{
+		this->ResetLevel();
+		this->ResetPlayer();
+		PostProcessor->Chaos = true;
+		this->State = GAME_WIN;
+	}
 }
 
 void FGame::ProcessInput(GLfloat DeltaTime)
@@ -161,6 +168,15 @@ void FGame::ProcessInput(GLfloat DeltaTime)
 			this->bKeysProcessed[GLFW_KEY_S] = true;
 		}
 	}
+	else if(this->State = GAME_WIN)
+	{
+		if (this->bKeys[GLFW_KEY_ENTER])
+		{
+			this->bKeysProcessed[GLFW_KEY_ENTER] = true;
+			PostProcessor->Chaos = false;
+			this->State = GAME_MENU;
+		}
+	}
 }
 
 void FGame::Render()
@@ -191,6 +207,11 @@ void FGame::Render()
 	{
 		Text->RenderText("Press Enter to Start", 250.0f, Height / 2, 1.0f);
 		Text->RenderText("Press W or S to select level", 245.0f, Height / 2 + 20.0f, 1.0f);
+	}
+	if (this->State == GAME_WIN)
+	{
+		Text->RenderText("You WON!!!", 320.0f, Height / 2 - 20.0f, 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		Text->RenderText("Press Entry to retry or ESC to quit", 130.0f, Height / 2, 1.0f, glm::vec3(1.0f, 1.0f, 0.0f));
 	}
 }
 
